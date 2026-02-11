@@ -1,4 +1,5 @@
 const express = require('express');
+const connectDB = require('./config/database')
 
 const app = express();
 
@@ -34,14 +35,23 @@ const app = express();
 
 //multiple route handlers
 
-app.use("/user", (req, res)=>{
-    res.send("1st")
-},
-(req, res) => {
-    res.send("2nd")
-}
-)
-
-app.listen(7777, ()=>{
+// app.use("/user", (req, res, next)=>{
+//     res.send("1st")
+//     next();
+// },
+// (req, res, next) => {
+//     res.send("2nd")
+//     next();
+// },
+// (req, res, next) => {
+//     res.send("3rd")
+// }
+// );
+connectDB().then(()=>{
+    console.log("DB Connected");
+    app.listen(7777, ()=>{
     console.log("server running");
 });
+}).catch(err => {
+    console.error("DB not Connected");
+})
