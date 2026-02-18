@@ -1,0 +1,28 @@
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+    firstName: {
+        type: String
+    },
+    lastName: {
+        type: String
+    },
+    emailId: {
+        type: String
+    },
+    password: {
+        type: String
+    },
+    age: {
+        type: Number
+    },
+    gender: {
+        type: String
+    }
+});
+
+//a model name always starts with a capital letter like here User
+
+const User=mongoose.model("users", userSchema);
+module.exports=User;
+
