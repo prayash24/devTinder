@@ -2,13 +2,20 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user.js");
+const {validateSignUpData} = require("./utils/validation.js")
 
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
+  try{
+  //validation of data
+  validateSignUpData(req);
+
+  //encrypt the password
+
+
   //creating a new instance of the userModel
   const user = new User(req.body);
-  try{
     await user.save();
     res.send("User added sucessfully!");
   } catch(err) {
