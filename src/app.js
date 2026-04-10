@@ -1,39 +1,18 @@
 const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
-const User = require("./models/user.js");
-const {validateSignUpData} = require("./utils/validation.js")
-const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+
+
 
 app.use(express.json());
+app.use(cookieParser());
 
-app.post("/signup", async (req, res) => {
-  try{
-  //validation of data
-  validateSignUpData(req);
+const authRouter = require("./routes/auth")
+const profileRouter = require("./routes/profile")
+const requestRouter = require("./routes/request")
 
-  //encrypt the password
-  const {firstName, lastName, emailId, password} = req.body;
-  const passwordHash = await bcrypt.hash(password, 10);
-  console.log(passwordHash);
-  
-
-  //creating a new instance of the userModel  z
-  const user = new User({
-    firstName, lastName, emailId, password: passwordHash,
-  });
-
-    await user.save();
-    res.send("User added sucessfully!");
-  } catch(err) {
-    res.status(400).send("Error saving USER" + err.message)
-  }
-});
-
-//feed API - GET /feed - get all the users from the database
-app.get("feed", (req, res) =>{
-  
-})
+app.use("/", authRouter);
 
 connectDB()
   .then(() => {
